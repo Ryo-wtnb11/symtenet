@@ -142,6 +142,19 @@ def test_to_backend_round_trips_through_jax():
     assert back == t
 
 
+def test_to_backend_to_the_current_backend_is_a_no_op():
+    # not just equal: the same block objects. A copy here is what detaches a torch
+    # tensor from its autograd graph (see tests/backends/test_torch.py).
+    t = SymmetricTensor.random(SU2_LEGS, seed=6)
+    assert t.to_backend("numpy").data == t.data
+
+    cast = t.to_backend("numpy", dtype=np.complex128)
+    assert cast.dtype == np.dtype(np.complex128)
+    assert cast.structure == t.structure
+    for a, b in zip(t.blocks, cast.blocks, strict=True):
+        np.testing.assert_array_equal(a, b.real)
+
+
 # --- block-free tensor ----------------------------------------------------------
 
 

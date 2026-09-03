@@ -683,6 +683,10 @@ class SymmetricTensor:
 
         Notes
         -----
+        A move to the backend the tensor already lives on is the identity on the
+        blocks — no copy, and, on torch, no ``torch.tensor(x)``, which would
+        detach them from the autograd graph. An explicit ``dtype`` still runs.
+
         The target backend's own dtype policy applies to the move (JAX demotes
         float64 to float32 unless ``jax_enable_x64`` is set). ``dtype`` runs
         after that move rather than as part of it, so it overrides a backend's
@@ -702,9 +706,15 @@ class SymmetricTensor:
         >>> t.to_backend("numpy", dtype=np.complex128).dtype
         dtype('complex128')
         """
-        moved = SymmetricTensor.from_data(
-            self.structure, tuple(ar.do("array", m, like=backend) for m in self.data)
-        )
+        if self.data and self.backend == backend:
+            # a move to where the tensor already is: no copy, and on torch no
+            # `torch.tensor(x)`, which would detach the blocks from the autograd
+            # graph. `backend` needs a block to be read off, hence `self.data`.
+            moved = self
+        else:
+            moved = SymmetricTensor.from_data(
+                self.structure, tuple(ar.do("array", m, like=backend) for m in self.data)
+            )
         return moved if dtype is None else moved.astype(dtype)
 
     # --- parameter protocol (quimb / autoray) ---------------------------------

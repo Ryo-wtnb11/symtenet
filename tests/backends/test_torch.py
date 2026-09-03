@@ -823,6 +823,19 @@ def test_eager_backward(name, objective):
     grads_are_finite(tt(SQUARE[name], seed=39), objective)
 
 
+@pytest.mark.parametrize("dtype", [None, "float64"])
+def test_to_backend_same_backend_keeps_the_graph(dtype):
+    """``t.to_backend("torch")`` on a torch tensor must not detach it.
+
+    ``ar.do("array", x, like="torch")`` is ``torch.tensor(x)``, which copies and
+    detaches, so the rebuild-unconditionally version zeroed every gradient routed
+    through a "move" that moves nothing.
+    """
+    grads_are_finite(
+        tt(SQUARE["su2"], seed=41), lambda x: tenet.norm(x.to_backend("torch", dtype=dtype))
+    )
+
+
 def test_eager_backward_through_embed():
     t = tt(SQUARE["u1"], seed=40)
     bigger = tuple(
