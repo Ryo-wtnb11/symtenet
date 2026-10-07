@@ -31,7 +31,7 @@ and contributors. [symmray](https://github.com/jcmgray/symmray), developed by
 Johnnie Gray and contributors, provides an important reference for the
 NumPy-style tensor interface and backend-native blocks through `autoray`.
 We gratefully acknowledge these mathematical, architectural, and implementation
-foundations. The [design document](docs/design.md) describes the roles of these
+foundations. The [design document](https://github.com/Ryo-wtnb11/symtenet/blob/main/docs/design.md) describes the roles of these
 and other reference libraries.
 
 **If you use symtenet in research, please cite TensorKit, QSpace, and symmray,
