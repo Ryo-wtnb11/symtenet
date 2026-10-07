@@ -17,6 +17,26 @@ the way an ndarray does. Blocks live in NumPy, JAX or PyTorch arrays through
 `jax.jit` and `jax.grad` with its symmetry structure intact. On top of the tensor layer,
 `tenet.network` ships finite DMRG and CTMRG.
 
+## Acknowledgments and upstream work
+
+symtenet builds on the mathematical and implementation work of
+[TensorKit.jl](https://github.com/QuantumKitHub/TensorKit.jl), developed by
+Lukas Devos, Jutho Haegeman, and contributors. TensorKit provides the primary
+foundation for its tensor-map semantics, fusion-tree bases, duality, and
+non-Abelian block linear algebra. Its architecture also draws on
+[TeNeT](https://github.com/Ryo-wtnb11/TeNeT), whose reduced-block design and
+execution approach are informed by
+[QSpace](https://bitbucket.org/qspace4u/), developed by Andreas Weichselbaum
+and contributors. [symmray](https://github.com/jcmgray/symmray), developed by
+Johnnie Gray and contributors, provides an important reference for the
+NumPy-style tensor interface and backend-native blocks through `autoray`.
+We gratefully acknowledge these mathematical, architectural, and implementation
+foundations. The [design document](docs/design.md) describes the roles of these
+and other reference libraries.
+
+**If you use symtenet in research, please cite TensorKit, QSpace, and symmray,
+as well as symtenet.** See [Citation](#citation) below.
+
 ## Install
 
 ```sh
@@ -102,7 +122,27 @@ assert g.legs == t.legs
 
 ## Citation
 
-If you use symtenet in your research, please cite it:
+**If you use symtenet in research, please cite TensorKit, QSpace, and symmray,
+as well as symtenet.** This requests scholarly credit for the work on which
+symtenet builds; it does not add a condition to the software license.
+
+- **TensorKit:** Lukas Devos and Jutho Haegeman, *TensorKit.jl: A Julia package
+  for large-scale tensor computations, with a hint of category theory* (2025),
+  [doi:10.48550/arXiv.2508.10076](https://doi.org/10.48550/arXiv.2508.10076).
+  See TensorKit's [official citation metadata](https://github.com/QuantumKitHub/TensorKit.jl/blob/main/CITATION.cff)
+  for its preferred citation and software record.
+- **QSpace:** Andreas Weichselbaum, *QSpace — An open-source tensor library for
+  Abelian and non-Abelian symmetries*, SciPost Physics Codebases **40** (2024),
+  [doi:10.21468/SciPostPhysCodeb.40](https://doi.org/10.21468/SciPostPhysCodeb.40).
+  When using QSpace directly, also cite the release used, following the
+  [QSpace publication's citation guidance](https://scipost.org/SciPostPhysCodeb.40).
+- **symmray:** Yang Gao et al., *Fermionic tensor network contraction for arbitrary
+  geometries*, Physical Review Research **7**, 023193 (2025),
+  [doi:10.1103/PhysRevResearch.7.023193](https://doi.org/10.1103/PhysRevResearch.7.023193),
+  as requested in symmray's [official citation guidance](https://github.com/jcmgray/symmray/blob/main/docs/references.md#citing-symmray).
+
+For symtenet itself:
+
 
 ```bibtex
 @software{symtenet,
